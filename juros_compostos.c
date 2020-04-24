@@ -30,8 +30,8 @@ float periodo(float cap, float mont, float tax){
 /*função para fazer a conversão de taxa em uma medida de tempo para a taxa em
 outra medida de tempo. Utilizando a taxa, sua medida de tempo e a medida a qual
 essa taxa será convertida*/
-float convert_taxa(float tax, char med_entrada, char med_saida){
-	float tax_diaria, tax_saida;
+double convert_taxa(float tax, char med_entrada, char med_saida){
+	double tax_diaria, tax_saida;
 /*tax: taxa a ser convertida
 med_entrada: medida da taxa a ser convertida
 med_saida: medida da taxa convertida
@@ -42,13 +42,13 @@ tax_saida: recebe a taxa convertida na medida de saída*/
 	switch(med_entrada){
 	
 		case 'a':/*caso a taxa for medida em anos ela será convertida em taxa diária*/
-			tax_diaria = pow(1 + tax/100, 1/360);
+			tax_diaria = pow(1 + (double)tax/100, (double)1/360);
 		break;       
 		case 'm':/*caso a taxa for medida em meses ela será convertida em taxa diária*/
-			tax_diaria = pow(1 + tax/100, 1/30);
+			tax_diaria = pow(1 + (double)tax/100, (double)1/30);
 		break;
 		case 'd':/*caso a taxa for medida em dias ela será convertida em taxa diária*/
-			tax_diaria = pow(1 + tax/100, 1/1);
+			tax_diaria = pow(1 + (double)tax/100, 1/1);
 		break;
 	}
 	
@@ -91,28 +91,43 @@ med_saida: medida de tempo da taxa convertida*/
 			scanf("%f", &c);
 			printf("\nTaxa: ");
 			scanf("%f", &i);
-			printf("Periodo: ");
+			getchar();/*limpando buffer do teclado*/
+			printf("\na - ao ano\nm - ao mes\nd - ao dia\nOpcao: ");
+			scanf("%c", &med_entrada);
+			printf("\nPeriodo: ");
 			scanf("%f", &t);
-    
+			getchar();/*limpando buffer do teclado*/
+			printf("\na - anos\nm - meses\nd - dias\nOpcao: ");
+			scanf("%c", &med_saida);
+			
+			i = convert_taxa(i, med_entrada, med_saida);
 			m = montante(c, i, t);/*calculando montante*/
 			j = m - c;/*calculando juros*/
     
-			printf("\nJuros: %.2f",j);
-			printf("\nMontante: %.2f",m);
+			printf("\nJuros: %8.10f",j);
+			printf("\nMontante: %8.10f",m);
 		break;
 		case 2:/*caso a opção digitada for 2 o capital e montante serão calculados*/
 			printf("\nJuros: ");
 			scanf("%f", &j);
 			printf("\nTaxa: ");
 			scanf("%f", &i);
-			printf("Periodo: ");
+			getchar();/*limpando buffer do teclado*/
+			printf("\na - ao ano\nm - ao mes\nd - ao dia\nOpcao: ");
+			scanf("%c", &med_entrada);
+			printf("\nPeriodo: ");
 			scanf("%f", &t);
+			getchar();/*limpando buffer do teclado*/
+			printf("\na - anos\nm - meses\nd - dias\nOpcao: ");
+			scanf("%c", &med_saida);
+			
+			i = convert_taxa(i, med_entrada, med_saida);
     
 			c = capital(j, i, t);/*calculando capital*/
 			m = c + j;/*calculando montante*/
     
-			printf("\nCapital: %.2f",c);
-			printf("\nMontante: %.2f",m);
+			printf("\nCapital: %8.10f",c);
+			printf("\nMontante: %8.10f",m);
 		break;
 		case 3:/*caso a opção digitada for 3 a taxa e o montante serão calculados*/
 			printf("\nCapital: ");
@@ -125,8 +140,8 @@ med_saida: medida de tempo da taxa convertida*/
 			m = c + j;/*calculando o montante*/
 			i = taxa(c, m, t);/*calculando a taxa*/
     
-			printf("\nTaxa: %.2f",i);
-			printf("\nMontante: %.2f",m);
+			printf("\nTaxa: %8.10f",i);
+			printf("\nMontante: %8.10f",m);
 		break;
 		case 4:/*caso a opção digitada for 4 o período e o montante serão calculados*/
 			printf("\nCapital: ");
@@ -139,8 +154,8 @@ med_saida: medida de tempo da taxa convertida*/
 			m = c + j;/*calculando o montante*/
 			t = periodo(c, m, i);/*calculando o período*/
     
-			printf("\nPeriodo: %.2f",t);
-			printf("\nMontante: %.2f",m);
+			printf("\nPeriodo: %8.10f",t);
+			printf("\nMontante: %8.10f",m);
 		break;
 		case 5:/*caso a opção digitada for 5 a taxa será convertida*/
 			printf("\nTaxa: ");
@@ -163,7 +178,7 @@ med_saida: medida de tempo da taxa convertida*/
 			
 		    taxa_convert = 100 * (pow(1 + convert_taxa(i, med_entrada, med_saida)/100, t) - 1);/*convertendo a taxa*/
 			
-			printf("\n%.2f %% a.%c = %.2f %% em %.2f %c", i, med_entrada, taxa_convert, t, med_saida);
+			printf("\n%.2f %% a.%c = %8.10f %% em %.2f %c", i, med_entrada, taxa_convert, t, med_saida);
 		break;
 	}
 	
